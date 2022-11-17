@@ -1,9 +1,12 @@
 package main
 
-func ret_num() int {
-	return 2
-}
 
 func main() {
-	ret_num()
+	x int = 2
+
+	if x == 2 {
+		x++
+	} else {
+		x--
+	}
 }
