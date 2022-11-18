@@ -1,4 +1,16 @@
 #pragma once
 
+#include "tokenizer.h"
+#include <string>
+#include <vector>
 
-void send_tokens_to_parser();
+
+struct AST {
+  
+  
+};
+
+
+void parse_statement(std::vector<Token*> tokens);
+void assign(std::string a, std::string b);
+void ret(Token* token);

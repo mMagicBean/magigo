@@ -3,10 +3,10 @@ package main
 
 func main() {
 	var x = 2
-	
+
 	if x == 2 {
-		x = x + 1
+		x++
 	} else {
-		x = x - 1
+		x--
 	}
 }

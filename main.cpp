@@ -6,9 +6,9 @@
 #include <fstream>
 #include <sstream>
 #include "tokenizer.h"
- 
+#include "parser.h" 
 
-// TODO: identify tokens in the accepted file
+
 std::string read_source_file(std::string source_file) {
   std::ifstream file(source_file);
   std::stringstream buffer;
@@ -24,6 +24,8 @@ int main(int argc, char* argv[]) {
 
   std::string src_code = read_source_file(src_file);
 
-  tokenize_source_code(src_code);
+  std::vector<Token*> tokens = tokenize_source_code(src_code);
+  
+  parse_statement(tokens);
 }
     

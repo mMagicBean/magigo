@@ -1,5 +1,6 @@
 #include "tokenizer.h"
 #include <iostream>
+#include <vector>
 
 
 const char* keyword[] = {
@@ -32,10 +33,6 @@ const char* operators[] = {
   "=", "+", "-", "*", "/", "++", "+=", "--", "-=", "%" 
 };
 
-
-// the token returned from here is gonna be appended
-// to an array or some other data structure i write in
-// the future
 Token* create_token(std::string name, std::string id, int val) {
   Token* t = new Token;
  
@@ -98,8 +95,6 @@ Token* check_if_open_bracket(std::string lexeme) {
   return NULL;
 }
 
-
-// NOTE: i might need to check whether the bracket is open or not 
 Token* check_if_closed_bracket(std::string lexeme) {
   for (int i=0; i < sizeof(closed_bracket) / sizeof(*closed_bracket); i++) {
     if (lexeme.length() == 0) {
@@ -116,8 +111,6 @@ Token* check_if_closed_bracket(std::string lexeme) {
 }
 
 Token* check_if_operator(std::string lexeme) {
-  // TODO: for increment/decrement operators i need to exclude the
-  // identifier that comes before, i'll do dat later doe... 
   for (int i=0; i < sizeof(operators) / sizeof(*operators); i++) {
     if (lexeme.length() == 0) {
       return NULL;
@@ -147,24 +140,45 @@ Token* check_if_int_literal(std::string lexeme) {
   return NULL;
 }
 
-void tokenize_source_code(std::string src_code) {
+std::vector<Token*> tokenize_source_code(std::string src_code) {
   std::string lexeme = "";
+  std::vector<Token*> tokens;
   
   for (int i = 0; i < src_code.length(); i++) {
     if (isspace(src_code[i]) && lexeme.length() != 0) {
       lexeme = remove_crap_symbols(lexeme);
-      check_if_keyword(lexeme);
-      check_if_type(lexeme);
-      check_if_open_bracket(lexeme);
-      check_if_closed_bracket(lexeme);
-      check_if_operator(lexeme);
-      check_if_int_literal(lexeme);
-      
-      lexeme = ""; // reset lexeme
+
+      if (check_if_keyword(lexeme) != NULL) {
+	tokens.push_back(check_if_keyword(lexeme));
+      }
+
+      if (check_if_type(lexeme) != NULL) {
+	tokens.push_back(check_if_keyword(lexeme));
+      }
+
+      if (check_if_open_bracket(lexeme) != NULL) {
+	tokens.push_back(check_if_open_bracket(lexeme));
+      }
+
+      if (check_if_closed_bracket(lexeme) != NULL) {
+	tokens.push_back(check_if_closed_bracket(lexeme));
+      }
+
+      if (check_if_operator(lexeme) != NULL) {
+	tokens.push_back(check_if_operator(lexeme));
+      }
+
+      if (check_if_int_literal(lexeme) != NULL) {
+	tokens.push_back(check_if_int_literal(lexeme));
+      }
+            
+      lexeme = ""; 
     }
       
     lexeme += src_code[i];
   }
+
+  return tokens;
 }
 
 std::string remove_crap_symbols(std::string lexeme) {
