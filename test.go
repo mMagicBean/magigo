@@ -2,11 +2,11 @@ package main
 
 
 func main() {
-	x int = 2
-
+	var x = 2
+	
 	if x == 2 {
-		x++
+		x = x + 1
 	} else {
-		x--
+		x = x - 1
 	}
 }
