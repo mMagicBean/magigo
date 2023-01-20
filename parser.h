@@ -4,13 +4,14 @@
 #include <string>
 #include <vector>
 
-
-struct AST {
+struct AST_Node {
+  int value;
   
-  
+  AST_Node* right = nullptr;
+  AST_Node* left = nullptr;
 };
 
+AST_Node* create_ast_node(AST_Node* ast, AST_Node* lnode = nullptr,
+			  AST_Node* rnode = nullptr);
+void parse_tokens(AST_Node* ast, std::vector<Token*> tokens); 
 
-void parse_statement(std::vector<Token*> tokens);
-void assign(std::string a, std::string b);
-void ret(Token* token);

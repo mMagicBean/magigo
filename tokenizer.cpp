@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 const char* keyword[] = {
   "break", "default", "func", "interface",
   "select", "case", "defer", "go", "map",
@@ -36,9 +35,9 @@ const char* operators[] = {
 Token* create_token(std::string name, std::string id, int val) {
   Token* t = new Token;
  
-  t->name = name;
-  t->token_id = id;
-  t->val = val;
+  t->name     = name;
+  t->id       = id;
+  t->value      = val;
 
   std::cout << "Token: " << name << ", id : " << id << ", val : "<< val <<"\n";
   
@@ -55,7 +54,10 @@ Token* check_if_keyword(std::string lexeme) {
     
     if (strcmp(keyword[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "keyword", NULL);
+      t->is_term = true;
       return t;
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
@@ -72,13 +74,15 @@ Token* check_if_type(std::string lexeme) {
     
     if (strcmp(type[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "type", NULL);
+      t->is_term = true;
       return t;
-    } 
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
+    }
   }
   
   return NULL;
 }
-
 
 Token* check_if_open_bracket(std::string lexeme) {
   for (int i=0; i < sizeof(open_bracket) / sizeof(*open_bracket); i++) {
@@ -88,7 +92,10 @@ Token* check_if_open_bracket(std::string lexeme) {
 
     if (strcmp(open_bracket[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "open_bracket", NULL);
+      t->is_term = true;
       return t;
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
     }
   }
 
@@ -103,7 +110,10 @@ Token* check_if_closed_bracket(std::string lexeme) {
     
     if (strcmp(closed_bracket[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "bracket", NULL);
+      t->is_term = true;
       return t;
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
     }
   }
 
@@ -118,7 +128,10 @@ Token* check_if_operator(std::string lexeme) {
 
     if (strcmp(operators[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "operator", NULL);
+      t->is_term = true;
       return t;
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
@@ -133,14 +146,18 @@ Token* check_if_int_literal(std::string lexeme) {
 
     if (strcmp(integer[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "integer_literal", atoi(lexeme.c_str()));
+      t->is_term = true;
       return t;
+    } else {
+      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
   return NULL;
 }
 
-std::vector<Token*> tokenize_source_code(std::string src_code) {
+// this is supposed to be called by the parser
+std::vector<Token*> generate_tokens(std::string src_code) {
   std::string lexeme = "";
   std::vector<Token*> tokens;
   
@@ -148,6 +165,8 @@ std::vector<Token*> tokenize_source_code(std::string src_code) {
     if (isspace(src_code[i]) && lexeme.length() != 0) {
       lexeme = remove_crap_symbols(lexeme);
 
+      // NOTE: i'm probably going to do this alot
+      //       so an array of function pointers could be valid here
       if (check_if_keyword(lexeme) != NULL) {
 	tokens.push_back(check_if_keyword(lexeme));
       }
@@ -185,11 +204,13 @@ std::string remove_crap_symbols(std::string lexeme) {
   lexeme.erase(std::remove(lexeme.begin(), lexeme.end(), '\n'), lexeme.cend());
   lexeme.erase(std::remove(lexeme.begin(), lexeme.end(), '\t'), lexeme.cend());
   lexeme.erase(std::remove(lexeme.begin(), lexeme.end(), ' '), lexeme.cend());
+  
   return lexeme;
 }
  
 std::string remove_crap_symbols_for_keyword(std::string lexeme) {
   lexeme.erase(std::remove(lexeme.begin(), lexeme.end(), '}'), lexeme.cend());
   lexeme.erase(std::remove(lexeme.begin(), lexeme.end(), '{'), lexeme.cend());  
+  
   return lexeme;
 }
