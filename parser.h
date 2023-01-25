@@ -5,13 +5,11 @@
 #include <vector>
 
 struct AST_Node {
-  int value;
+  int value = 0;
   
   AST_Node* right = nullptr;
-  AST_Node* left = nullptr;
+  AST_Node* left  = nullptr;
 };
 
-AST_Node* create_ast_node(AST_Node* ast, AST_Node* lnode = nullptr,
-			  AST_Node* rnode = nullptr);
-void parse_tokens(AST_Node* ast, std::vector<Token*> tokens); 
-
+AST_Node* create_node();
+void parse_tokens(std::vector<Token*> tokens); 

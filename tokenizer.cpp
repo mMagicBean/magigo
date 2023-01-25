@@ -37,7 +37,7 @@ Token* create_token(std::string name, std::string id, int val) {
  
   t->name     = name;
   t->id       = id;
-  t->value      = val;
+  t->value    = val;
 
   std::cout << "Token: " << name << ", id : " << id << ", val : "<< val <<"\n";
   
@@ -56,8 +56,6 @@ Token* check_if_keyword(std::string lexeme) {
       Token* t = create_token(lexeme, "keyword", NULL);
       t->is_term = true;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
@@ -76,8 +74,6 @@ Token* check_if_type(std::string lexeme) {
       Token* t = create_token(lexeme, "type", NULL);
       t->is_term = true;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
@@ -94,8 +90,6 @@ Token* check_if_open_bracket(std::string lexeme) {
       Token* t = create_token(lexeme, "open_bracket", NULL);
       t->is_term = true;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
     }
   }
 
@@ -110,11 +104,9 @@ Token* check_if_closed_bracket(std::string lexeme) {
     
     if (strcmp(closed_bracket[i], lexeme.c_str()) == 0) {
       Token* t = create_token(lexeme, "bracket", NULL);
-      t->is_term = true;
+      t->is_term = false;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
-    }
+    } 
   }
 
   return NULL;
@@ -130,8 +122,6 @@ Token* check_if_operator(std::string lexeme) {
       Token* t = create_token(lexeme, "operator", NULL);
       t->is_term = true;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
     }
   }
   
@@ -148,9 +138,7 @@ Token* check_if_int_literal(std::string lexeme) {
       Token* t = create_token(lexeme, "integer_literal", atoi(lexeme.c_str()));
       t->is_term = true;
       return t;
-    } else {
-      printf("%s not recognized\n", lexeme.c_str());
-    }
+    } 
   }
   
   return NULL;
