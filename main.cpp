@@ -6,7 +6,8 @@
 #include <fstream>
 #include <sstream>
 #include "tokenizer.h"
- 
+#include "parser.h" 
+
 
 std::string read_source_file(std::string source_file) {
   std::ifstream file(source_file);
@@ -23,6 +24,8 @@ int main(int argc, char* argv[]) {
 
   std::string src_code = read_source_file(src_file);
 
-  generate_tokens(src_code);
+  std::vector<Token*> tokens = generate_tokens(src_code);
+
+  parse_tokens(tokens);
 }
     
