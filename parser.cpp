@@ -19,12 +19,12 @@ AST_Node* create_node() {
 }
 
 void destroy_node(AST_Node* node) {
+  free(node);
+  
   node->value  = NULL;
   node->right  = NULL;
   node->left   = NULL;
   node->parent = NULL;
-  
-  free(node);
 }
 
 AST_Node* parse_expressions(std::vector<Token*> tokens, int index) {
@@ -82,4 +82,7 @@ void traverse_nodes(AST_Node* node) {
       }
     }
   }
+
+  destroy_node(curr_node);
+  destroy_node(next_node);
 }
