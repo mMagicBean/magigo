@@ -144,7 +144,7 @@ Token* check_if_int_literal(std::string lexeme) {
   return NULL;
 }
 
-// this is supposed to be called by the parser
+
 std::vector<Token*> generate_tokens(std::string src_code) {
   std::string lexeme = "";
   std::vector<Token*> tokens;
@@ -153,8 +153,6 @@ std::vector<Token*> generate_tokens(std::string src_code) {
     if (isspace(src_code[i]) && lexeme.length() != 0) {
       lexeme = remove_crap_symbols(lexeme);
 
-      // NOTE: i'm probably going to do this alot
-      //       so an array of function pointers could be valid here
       if (check_if_keyword(lexeme) != NULL) {
 	tokens.push_back(check_if_keyword(lexeme));
       }
